@@ -6,6 +6,9 @@ boolean enableAnimBeamRotation = boolean(0);
 boolean enableAnimLeanRotation = boolean(0);
 boolean enableAnimLeanRotationCos = boolean(0);
 
+// Functions (0 = false)
+boolean enableFuncSavePicture = boolean(1);
+
 // Colours
 color pulsarPurp = #662d91; // Purple hex value for logo
 color white = color(255); // White colour of details on logo
@@ -75,6 +78,13 @@ void draw() {
   }
   if (enableAnimLeanRotationCos) {
     animLeanRotationCos();
+  }
+}
+
+// Function Options - Trigerred by keypress
+void keyPressed() {
+  if (enableFuncSavePicture) {
+    save("image.png");
   }
 }
 
