@@ -7,7 +7,7 @@ boolean enableAnimLeanRotation = boolean(0);
 boolean enableAnimLeanRotationCos = boolean(0);
 
 // Functions (0 = false)
-boolean enableFuncSavePicture = boolean(1);
+boolean enableFuncSavePicture = boolean(0);
 
 // Colours
 color pulsarPurp = #662d91; // Purple hex value for logo
@@ -94,7 +94,7 @@ void draw() {
 // Function Options - Trigerred by keypress
 void keyPressed() {
   if (enableFuncSavePicture) {
-    save("image.png");
+    pg.save("image.png");
   }
 }
 
