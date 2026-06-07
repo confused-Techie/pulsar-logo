@@ -10,8 +10,11 @@ boolean enableAnimLeanRotationCos = boolean(0);
 boolean enableFuncSavePicture = boolean(0);
 
 // Colours
-color pulsarPurp = #662d91; // Purple hex value for logo
-color white = color(255); // White colour of details on logo
+color pulsarPurpConst = #662d91; // Purple hex value
+color cIconColour = pulsarPurpConst; // Filled in colour of icon
+color cStroke = color(255); // Colour of details on logo
+color cBackdropColour = color(0, 0, 0); // Backdrop colour of image
+int cBackdropAlpha = 0; // Backdrop alpha value of image (0 = transparent)
 
 // Values & Sizing
 int leftLeanWidth = 750; // Width of the left leaning oval
@@ -54,16 +57,15 @@ PGraphics pg;
 
 void setup() {
   size(1024, 1024);
-  smooth(); // draw nicely
-  noStroke(); // no shape outlines
   
   pg = createGraphics(width, height);
   pg.smooth(8);
+  pg.noStroke();
 }
 
 void draw() {
   pg.beginDraw();
-  pg.background(0, 0, 0, 0);
+  pg.background(cBackdropColour, cBackdropAlpha);
   
   originX = width/2;
   originY = height/2;
@@ -124,7 +126,8 @@ void animLeanRotationCos() {
 
 // === Drawing 
 void drawOutterCircle() {
-  pg.fill(pulsarPurp);
+  pg.noStroke();
+  pg.fill(cIconColour);
   pg.ellipse(originX, originY, outterCircleSize, outterCircleSize);
 }
 
@@ -133,7 +136,7 @@ void drawLeftLean() {
   pg.translate(originX, originY);
   pg.rotate(leftLeanAngle);
   pg.strokeWeight(leftLeanThickness);
-  pg.stroke(white);
+  pg.stroke(cStroke);
   pg.fill(0, 0, 0, 0);
   pg.ellipse(0, 0, leftLeanWidth, leftLeanHeight);
   pg.noStroke();
@@ -145,7 +148,7 @@ void drawRightLean() {
   pg.translate(originX, originY);
   pg.rotate(rightLeanAngle);
   pg.strokeWeight(rightLeanThickness);
-  pg.stroke(white);
+  pg.stroke(cStroke);
   pg.fill(0, 0, 0, 0);
   pg.ellipse(0, 0, rightLeanWidth, rightLeanHeight);
   pg.noStroke();
@@ -154,15 +157,15 @@ void drawRightLean() {
 
 void drawInnerCircle() {
   // Inner circle (white)
-  pg.fill(white);
+  pg.fill(cStroke);
   pg.ellipse(originX, originY, innerCircleSize, innerCircleSize);
   // Inner circle (purple) -- Used to make it an empty circle
-  pg.fill(pulsarPurp);
+  pg.fill(cIconColour);
   pg.ellipse(originX, originY, innerCircleSize-innerCircleThickness*2, innerCircleSize-innerCircleThickness*2);
 }
 
 void drawCenterCircle() {
-  pg.fill(white);
+  pg.fill(cStroke);
   pg.ellipse(originX, originY, centerCircleSize, centerCircleSize);
 }
 
@@ -180,7 +183,7 @@ void drawBeamStartCutout(float rot) {
  pg.pushMatrix();
  pg.translate(originX, originY);
  pg.rotate(rot);
- pg.fill(pulsarPurp);
+ pg.fill(cIconColour);
  pg.ellipse(beamOffsetCenterX, beamOffsetCenterY, startBeamSize+(startBeamCutoutSize*2), startBeamSize+(startBeamCutoutSize*2));
  pg.popMatrix();
 }
@@ -189,7 +192,7 @@ void drawBeamStubCutout(float rot) {
   pg.pushMatrix();
   pg.translate(originX, originY);
   pg.rotate(rot);
-  pg.fill(pulsarPurp);
+  pg.fill(cIconColour);
   
   if (SHOW_CUTOUTS) { pg.fill(255,0,0); }
   
@@ -246,7 +249,7 @@ void drawBeamLongCutout(float rot) {
   pg.pushMatrix();
   pg.translate(originX, originY);
   pg.rotate(rot);
-  pg.fill(pulsarPurp);
+  pg.fill(cIconColour);
   if (SHOW_CUTOUTS) { pg.fill(255,0,0); }
   // Define Centroids
   float beamLongX1 = beamOffsetCenterX+beamStubWidth+(startBeamSize/2);
@@ -306,7 +309,7 @@ void drawBeamStart(float rot) {
   pg.pushMatrix();
   pg.translate(originX, originY);
   pg.rotate(rot);
-  pg.fill(white);
+  pg.fill(cStroke);
   pg.ellipse(beamOffsetCenterX, beamOffsetCenterY, startBeamSize, startBeamSize);
   pg.popMatrix();
 }
@@ -315,7 +318,7 @@ void drawBeamStub(float rot) {
   pg.pushMatrix();
   pg.translate(originX, originY);
   pg.rotate(rot);
-  pg.fill(white);
+  pg.fill(cStroke);
   pg.triangle(
     beamOffsetCenterX, beamOffsetCenterY, 
     beamOffsetCenterX+beamStubWidth+(startBeamSize/2), beamOffsetCenterY+(beamStubLength/2), 
@@ -329,7 +332,7 @@ void drawBeamLong(float rot) {
  pg.pushMatrix();
  pg.translate(originX, originY);
  pg.rotate(rot);
- pg.fill(white);
+ pg.fill(cStroke);
  pg.triangle(
     beamOffsetCenterX+beamStubWidth+(startBeamSize/2)-0.8, beamOffsetCenterY+(beamStubLength/2),
     beamOffsetCenterX+beamStubWidth+(startBeamSize/2)-0.8, -(beamOffsetCenterY+(beamStubLength/2)),
@@ -342,7 +345,7 @@ void drawBeamEndCap(float rot) {
   pg.pushMatrix();
   pg.translate(originX, originY);
   pg.rotate(rot);
-  pg.fill(pulsarPurp);
+  pg.fill(cIconColour);
   pg.rect(
     (beamOffsetCenterX+beamStubWidth+(startBeamSize/2)+beamLongLength)-beamEndcapSize,
     -beamEndcapSize/2,
