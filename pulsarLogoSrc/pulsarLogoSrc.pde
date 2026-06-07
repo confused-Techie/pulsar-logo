@@ -29,7 +29,7 @@ float rightLeanAngle = PI/3.0; // Angle of the right leaning oval
 
 int outterCircleSize = 1024; // Circular size of the primary outter circle
 
-int innerCircleSize = 350; // Circular size of the inner circle
+int innerCircleSize = 310; // Circular size of the inner circle
 int innerCircleThickness = 40; // Thickness of the inner circle's 'cutout'
 
 int centerCircleSize = 167; // Circular size of center-most circle
@@ -156,12 +156,10 @@ void drawRightLean() {
 }
 
 void drawInnerCircle() {
-  // Inner circle (white)
-  pg.fill(cStroke);
+  pg.strokeWeight(innerCircleThickness);
+  pg.stroke(cStroke);
   pg.ellipse(originX, originY, innerCircleSize, innerCircleSize);
-  // Inner circle (purple) -- Used to make it an empty circle
-  pg.fill(cIconColour);
-  pg.ellipse(originX, originY, innerCircleSize-innerCircleThickness*2, innerCircleSize-innerCircleThickness*2);
+  pg.noStroke();
 }
 
 void drawCenterCircle() {
