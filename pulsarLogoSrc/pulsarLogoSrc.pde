@@ -50,14 +50,21 @@ float animLeanRotationCosLeftValue = leftLeanAngle;
 // Internal Values
 float originX;
 float originY;
+PGraphics pg;
 
 void setup() {
   size(1024, 1024);
   smooth(); // draw nicely
   noStroke(); // no shape outlines
+  
+  pg = createGraphics(width, height);
+  pg.smooth(8);
 }
 
 void draw() {
+  pg.beginDraw();
+  pg.background(0, 0, 0, 0);
+  
   originX = width/2;
   originY = height/2;
   
@@ -79,6 +86,9 @@ void draw() {
   if (enableAnimLeanRotationCos) {
     animLeanRotationCos();
   }
+  
+  pg.endDraw();
+  image(pg, 0, 0);
 }
 
 // Function Options - Trigerred by keypress
@@ -114,46 +124,46 @@ void animLeanRotationCos() {
 
 // === Drawing 
 void drawOutterCircle() {
-  fill(pulsarPurp);
-  ellipse(originX, originY, outterCircleSize, outterCircleSize);
+  pg.fill(pulsarPurp);
+  pg.ellipse(originX, originY, outterCircleSize, outterCircleSize);
 }
 
 void drawLeftLean() {
-  pushMatrix();
-  translate(originX, originY);
-  rotate(leftLeanAngle);
-  strokeWeight(leftLeanThickness);
-  stroke(white);
-  fill(0, 0, 0, 0);
-  ellipse(0, 0, leftLeanWidth, leftLeanHeight);
-  noStroke();
-  popMatrix();
+  pg.pushMatrix();
+  pg.translate(originX, originY);
+  pg.rotate(leftLeanAngle);
+  pg.strokeWeight(leftLeanThickness);
+  pg.stroke(white);
+  pg.fill(0, 0, 0, 0);
+  pg.ellipse(0, 0, leftLeanWidth, leftLeanHeight);
+  pg.noStroke();
+  pg.popMatrix();
 }
 
 void drawRightLean() {
-  pushMatrix();
-  translate(originX, originY);
-  rotate(rightLeanAngle);
-  strokeWeight(rightLeanThickness);
-  stroke(white);
-  fill(0, 0, 0, 0);
-  ellipse(0, 0, rightLeanWidth, rightLeanHeight);
-  noStroke();
-  popMatrix();
+  pg.pushMatrix();
+  pg.translate(originX, originY);
+  pg.rotate(rightLeanAngle);
+  pg.strokeWeight(rightLeanThickness);
+  pg.stroke(white);
+  pg.fill(0, 0, 0, 0);
+  pg.ellipse(0, 0, rightLeanWidth, rightLeanHeight);
+  pg.noStroke();
+  pg.popMatrix();
 }
 
 void drawInnerCircle() {
   // Inner circle (white)
-  fill(white);
-  ellipse(originX, originY, innerCircleSize, innerCircleSize);
+  pg.fill(white);
+  pg.ellipse(originX, originY, innerCircleSize, innerCircleSize);
   // Inner circle (purple) -- Used to make it an empty circle
-  fill(pulsarPurp);
-  ellipse(originX, originY, innerCircleSize-innerCircleThickness*2, innerCircleSize-innerCircleThickness*2);
+  pg.fill(pulsarPurp);
+  pg.ellipse(originX, originY, innerCircleSize-innerCircleThickness*2, innerCircleSize-innerCircleThickness*2);
 }
 
 void drawCenterCircle() {
-  fill(white);
-  ellipse(originX, originY, centerCircleSize, centerCircleSize);
+  pg.fill(white);
+  pg.ellipse(originX, originY, centerCircleSize, centerCircleSize);
 }
 
 void drawBeam(float rot) {
@@ -167,21 +177,21 @@ void drawBeam(float rot) {
 }
 
 void drawBeamStartCutout(float rot) {
- pushMatrix();
- translate(originX, originY);
- rotate(rot);
- fill(pulsarPurp);
- ellipse(beamOffsetCenterX, beamOffsetCenterY, startBeamSize+(startBeamCutoutSize*2), startBeamSize+(startBeamCutoutSize*2));
- popMatrix();
+ pg.pushMatrix();
+ pg.translate(originX, originY);
+ pg.rotate(rot);
+ pg.fill(pulsarPurp);
+ pg.ellipse(beamOffsetCenterX, beamOffsetCenterY, startBeamSize+(startBeamCutoutSize*2), startBeamSize+(startBeamCutoutSize*2));
+ pg.popMatrix();
 }
 
 void drawBeamStubCutout(float rot) {
-  pushMatrix();
-  translate(originX, originY);
-  rotate(rot);
-  fill(pulsarPurp);
+  pg.pushMatrix();
+  pg.translate(originX, originY);
+  pg.rotate(rot);
+  pg.fill(pulsarPurp);
   
-  if (SHOW_CUTOUTS) { fill(255,0,0); }
+  if (SHOW_CUTOUTS) { pg.fill(255,0,0); }
   
   /*
     The `scale` function doesn't play nicely with retaining the origin point with triangles. So we will do this with just math.
@@ -222,22 +232,22 @@ void drawBeamStubCutout(float rot) {
   float beamStubTrimX3 = beamStubSX3 - beamStubTrimEnd;
   float beamStubTrimY3 = lerp(beamStubSY3, beamStubSY1, beamStubTrimEndPerc);
   
-  beginShape();
-  vertex(beamStubSX1, beamStubSY1);
-  vertex(beamStubTrimX2, beamStubTrimY2);
-  vertex(beamStubTrimX3, beamStubTrimY3);
-  vertex(beamStubSX1, beamStubSY1);
-  endShape(CLOSE);
+  pg.beginShape();
+  pg.vertex(beamStubSX1, beamStubSY1);
+  pg.vertex(beamStubTrimX2, beamStubTrimY2);
+  pg.vertex(beamStubTrimX3, beamStubTrimY3);
+  pg.vertex(beamStubSX1, beamStubSY1);
+  pg.endShape(CLOSE);
 
-  popMatrix();
+  pg.popMatrix();
 }
 
 void drawBeamLongCutout(float rot) {
-  pushMatrix();
-  translate(originX, originY);
-  rotate(rot);
-  fill(pulsarPurp);
-  if (SHOW_CUTOUTS) { fill(255,0,0); }
+  pg.pushMatrix();
+  pg.translate(originX, originY);
+  pg.rotate(rot);
+  pg.fill(pulsarPurp);
+  if (SHOW_CUTOUTS) { pg.fill(255,0,0); }
   // Define Centroids
   float beamLongX1 = beamOffsetCenterX+beamStubWidth+(startBeamSize/2);
   float beamLongX2 = beamOffsetCenterX+beamStubWidth+(startBeamSize/2);
@@ -282,63 +292,63 @@ void drawBeamLongCutout(float rot) {
   float beamLongTrimX2 = beamLongSX2 + beamLongTrimStart;
   float beamLongTrimY2 = lerp(beamLongSY2, beamLongSY3, beamLongTrimStartPerc);
   
-  beginShape();
-  vertex(beamLongTrimX1, beamLongTrimY1);
-  vertex(beamLongTrimX2, beamLongTrimY2);
-  vertex(beamLongTrimX3, beamLongTrimY3);
-  vertex(beamLongTrimX4, beamLongTrimY4);
-  endShape(CLOSE);
+  pg.beginShape();
+  pg.vertex(beamLongTrimX1, beamLongTrimY1);
+  pg.vertex(beamLongTrimX2, beamLongTrimY2);
+  pg.vertex(beamLongTrimX3, beamLongTrimY3);
+  pg.vertex(beamLongTrimX4, beamLongTrimY4);
+  pg.endShape(CLOSE);
   
-  popMatrix();
+  pg.popMatrix();
 }
 
 void drawBeamStart(float rot) {
-  pushMatrix();
-  translate(originX, originY);
-  rotate(rot);
-  fill(white);
-  ellipse(beamOffsetCenterX, beamOffsetCenterY, startBeamSize, startBeamSize);
-  popMatrix();
+  pg.pushMatrix();
+  pg.translate(originX, originY);
+  pg.rotate(rot);
+  pg.fill(white);
+  pg.ellipse(beamOffsetCenterX, beamOffsetCenterY, startBeamSize, startBeamSize);
+  pg.popMatrix();
 }
 
 void drawBeamStub(float rot) {
-  pushMatrix();
-  translate(originX, originY);
-  rotate(rot);
-  fill(white);
-  triangle(
+  pg.pushMatrix();
+  pg.translate(originX, originY);
+  pg.rotate(rot);
+  pg.fill(white);
+  pg.triangle(
     beamOffsetCenterX, beamOffsetCenterY, 
     beamOffsetCenterX+beamStubWidth+(startBeamSize/2), beamOffsetCenterY+(beamStubLength/2), 
     beamOffsetCenterX+beamStubWidth+(startBeamSize/2), -(beamOffsetCenterY+(beamStubLength/2))
   );
-  noStroke();
-  popMatrix();
+  pg.noStroke();
+  pg.popMatrix();
 }
 
 void drawBeamLong(float rot) {
- pushMatrix();
- translate(originX, originY);
- rotate(rot);
- fill(white);
- triangle(
+ pg.pushMatrix();
+ pg.translate(originX, originY);
+ pg.rotate(rot);
+ pg.fill(white);
+ pg.triangle(
     beamOffsetCenterX+beamStubWidth+(startBeamSize/2)-0.8, beamOffsetCenterY+(beamStubLength/2),
     beamOffsetCenterX+beamStubWidth+(startBeamSize/2)-0.8, -(beamOffsetCenterY+(beamStubLength/2)),
     beamOffsetCenterX+beamStubWidth+(startBeamSize/2)+beamLongLength, 0
   );
- popMatrix();
+ pg.popMatrix();
 }
 
 void drawBeamEndCap(float rot) {
-  pushMatrix();
-  translate(originX, originY);
-  rotate(rot);
-  fill(pulsarPurp);
-  rect(
+  pg.pushMatrix();
+  pg.translate(originX, originY);
+  pg.rotate(rot);
+  pg.fill(pulsarPurp);
+  pg.rect(
     (beamOffsetCenterX+beamStubWidth+(startBeamSize/2)+beamLongLength)-beamEndcapSize,
     -beamEndcapSize/2,
     beamEndcapSize,
     beamEndcapSize
   );
-  noStroke();
-  popMatrix();
+  pg.noStroke();
+  pg.popMatrix();
 }
